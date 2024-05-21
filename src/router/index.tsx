@@ -4,27 +4,92 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import layoutsConfig from "@/layouts";
+import routeConfig, { IRouteObject } from "./config";
+import { flattenRoutes } from "@/utils";
+import NotFound from "@/layouts/NotFound";
 
-import HomeLayout from "@/layouts/homeLayout";
+const Layouts = () => {
+  const getLayoutItem = (ele: IRouteObject, relativePath?: string) => {
+    const layoutItem = layoutsConfig.find(
+      (item) => ele.path?.indexOf(item.path) === 0
+    );
 
-// import Login from "@/views/login";
+    const Com = layoutItem?.layout;
 
-const CRouter = () => {
+    return (
+      <Route
+        key={ele.path}
+        path={relativePath}
+        element={Com ? <Com>{ele.element}</Com> : ele.element}
+      />
+    );
+  };
+
+  const renderRoute = () => {
+    return routeConfig.map((ele) => {
+      if (ele.children) {
+        return [
+          <Route
+            key={ele.path}
+            path={ele.path}
+            element={
+              <Navigate
+                to={
+                  ele.children.find((i) => i.default)?.path ||
+                  ele.children?.[0].path
+                }
+              />
+            }
+          />,
+          <Route
+            path={`${ele.path}/*`}
+            key={ele.path}
+            element={
+              <Routes>
+                {flattenRoutes(ele.children).map((item: IRouteObject) => {
+                  const relativePath =
+                    item.path.indexOf(ele.path) === 0
+                      ? item.path.replace(ele.path, "")
+                      : item.path;
+                  return getLayoutItem(item, relativePath);
+                })}
+                {getLayoutItem({ ...ele, element: <NotFound /> }, "/*")}
+              </Routes>
+            }
+          />,
+        ];
+      }
+      return (
+        <Route key={ele.path} path={ele.path} element={getLayoutItem(ele)} />
+      );
+    });
+  };
+
+  const renderLayoutNotFound = () => {
+    return layoutsConfig.map((item) => {
+      const Com = item.layout;
+      return (
+        <Route
+          key={item.path}
+          path={`${item.path}/*`}
+          element={
+            <Com>
+              <NotFound />
+            </Com>
+          }
+        />
+      );
+    });
+  };
   return (
     <Router>
       <Routes>
-        <Route path="/admin/*" element={<HomeLayout />} />
-        <Route path="/c" element={<Navigate to="/" />} />
+        {renderRoute()}
+        {renderLayoutNotFound()}
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>
   );
 };
-export default CRouter;
-// if (!token) {
-//   return <Redirect to="/login" />;
-// } else {
-//   if (role) {
-//   } else {
-//     getUserInfo(token).then(() => <Layout />);
-//   }
-// }
+export default Layouts;

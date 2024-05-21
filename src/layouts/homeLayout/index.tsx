@@ -1,26 +1,36 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { ReactNode, useState } from "react";
+import "./index.scss";
 
-import styles from "./styles.module.scss";
+import { Layout } from "antd";
+import RouterMenus from "./RouterMenus";
 
-const HomeLayout: React.FC = () => {
+const { Header, Content, Footer, Sider } = Layout;
+
+interface HomeLayoutProps {
+  children?: ReactNode;
+}
+
+const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div>
-      <h1>admin</h1>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div className={styles["main"]}>
-              main
-              <div className={styles["title"]}>title</div>
-            </div>
-          }
-        />
-        <Route path="/a" element={<div>啊啊啊</div>} />
-        <Route path="/b" element={<div>别别别</div>} />
-      </Routes>
-    </div>
+    <Layout className="home-layout">
+      <Header className="header">Header</Header>
+      <Layout>
+        <Sider
+          className="sider"
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+        >
+          <RouterMenus />
+        </Sider>
+        <Layout>
+          <Content className="content">{children}</Content>
+          <Footer className="footer">Footer</Footer>
+        </Layout>
+      </Layout>
+    </Layout>
   );
 };
 export default HomeLayout;
