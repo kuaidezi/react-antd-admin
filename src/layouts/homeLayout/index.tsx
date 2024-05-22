@@ -27,7 +27,9 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
         </Sider>
         <Layout>
           <Content className="content">{children}</Content>
-          <Footer className="footer">Footer</Footer>
+          <Footer hidden className="footer">
+            Footer
+          </Footer>
         </Layout>
       </Layout>
     </Layout>

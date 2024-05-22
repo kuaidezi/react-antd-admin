@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, MenuProps } from "antd";
 
@@ -44,10 +44,13 @@ const getMenus = () => {
 const flattenRoutesList: IRouteObject[] = flattenRoutes(routerConfig);
 
 const RouterMenus: FC<MenuProps> = (props) => {
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const navigate = useNavigate();
+
   const { pathname } = useLocation();
 
-  const defaultOpenKeys = useMemo(() => {
+  useEffect(() => {
     const arr: string[] = [];
 
     const item = flattenRoutesList.find((i) =>
@@ -63,30 +66,23 @@ const RouterMenus: FC<MenuProps> = (props) => {
         }
       };
       recursion(item.parentId);
+      setSelectedKeys([item.path]);
+      setOpenKeys(arr);
     }
-    return arr;
   }, [pathname]);
-
-  const defaultSelectedKey = useMemo(() => {
-    const item = flattenRoutesList.find((i) =>
-      isMatchingThePath(pathname, i.path)
-    );
-    return item?.path ? [item?.path] : undefined;
-  }, [pathname]);
-
-  const handleClickMenu = (e: any) => {
-    const { key } = e;
-    navigate(key);
-  };
 
   return (
     <Menu
       theme="dark"
-      defaultSelectedKeys={defaultSelectedKey}
-      defaultOpenKeys={defaultOpenKeys}
+      openKeys={openKeys}
+      selectedKeys={selectedKeys}
       mode="inline"
       items={getMenus()}
-      onClick={handleClickMenu}
+      onOpenChange={(v) => setOpenKeys(v)}
+      onSelect={({ key }) => {
+        setSelectedKeys([key]);
+        navigate(key);
+      }}
       {...props}
     />
   );
