@@ -1,0 +1,35 @@
+.page-content {
+    background-color: white;
+    border-radius: 4px;
+    margin: 0 16px;
+    padding: 8px;
+    height: 100%;
+    overflow: auto;
+    line-height: normal;
+}
+
+.page-header {
+    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    line-height: normal;
+    padding: 8px 0;
+    align-items: center;
+    margin: 0 16px;
+
+    .page-header-btns {
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row-reverse;
+        gap: 0 8px;
+    }
+
+    .page-header-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0 4px;
+    }
+}
