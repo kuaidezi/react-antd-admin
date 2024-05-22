@@ -1,4 +1,5 @@
-import React, { FC, ReactNode } from "react";
+import { FC, ReactNode } from "react";
+import "./index.scss";
 
 interface PublicLayoutProps {
   children?: ReactNode;
@@ -6,9 +7,9 @@ interface PublicLayoutProps {
 
 const PublicLayout: FC<PublicLayoutProps> = ({ children }) => {
   return (
-    <div>
-      <h2>Public</h2>
-      {children}
+    <div className="public-layout">
+      <div className="public-layout-title">Public页面</div>
+      <div className="public-layout-content">{children}</div>
     </div>
   );
 };

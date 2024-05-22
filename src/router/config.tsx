@@ -8,6 +8,11 @@ import {
 } from "@ant-design/icons";
 import { GenerateIdentification } from "@/utils";
 
+import GoodsList from "@/pages/GoodsList";
+import GoodsDetail from "@/pages/GoodsDetail";
+import EventList from "@/pages/EventList";
+import EventDetail from "@/pages/EventDetail";
+
 export interface IRouteObject {
   path: string;
   element?: ReactNode;
@@ -28,13 +33,13 @@ const routerConfig: IRouteObject[] = [
       {
         path: "/admin/goods/list",
         title: "货物列表",
-        element: <div>货物列表</div>,
+        element: <GoodsList />,
         icon: <PieChartOutlined />,
       },
       {
         path: "/admin/goods/detail/:id/:name",
         title: "货物详情",
-        element: <div>货物详情</div>,
+        element: <GoodsDetail />,
         icon: <TeamOutlined />,
       },
     ],
@@ -90,8 +95,16 @@ const routerConfig: IRouteObject[] = [
     title: "公开",
     icon: <FileOutlined />,
     children: [
-      { path: "/public/a", title: "公开a", element: <div>公开a</div> },
-      { path: "/public/b", title: "公开b", element: <div>公开b</div> },
+      {
+        path: "/public/event/list",
+        title: "事件列表",
+        element: <EventList />,
+      },
+      {
+        path: "/public/event/detail/:id",
+        title: "事件详情",
+        element: <EventDetail />,
+      },
     ],
   },
 ];
