@@ -6,8 +6,6 @@ interface PageContentProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const PageContent: FC<PageContentProps> = ({ children, ...other }) => {
-  console.log(other);
-
   return (
     <div className="page-content" {...other}>
       {children}

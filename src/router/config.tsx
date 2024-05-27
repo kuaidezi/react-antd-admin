@@ -26,6 +26,12 @@ export interface IRouteObject {
 
 const routerConfig: IRouteObject[] = [
   {
+    path: "/admin/gragh",
+    title: "管理",
+    icon: <DesktopOutlined />,
+    element: <GoodsList />,
+  },
+  {
     path: "/admin/goods",
     title: "管理",
     icon: <DesktopOutlined />,

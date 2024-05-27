@@ -10,12 +10,19 @@ import { flattenRoutes } from "@/utils";
 import NotFound from "@/layouts/NotFound";
 
 const Layouts = () => {
-  const getLayoutItem = (ele: IRouteObject, relativePath?: string) => {
+  const getLayoutItem = (
+    ele: IRouteObject,
+    relativePath?: string,
+    onlyElement?: boolean
+  ) => {
     const layoutItem = layoutsConfig.find(
       (item) => ele.path?.indexOf(item.path) === 0
     );
 
     const Com = layoutItem?.layout;
+    if (onlyElement) {
+      return Com ? <Com>{ele.element}</Com> : ele.element;
+    }
 
     return (
       <Route
@@ -61,7 +68,11 @@ const Layouts = () => {
         ];
       }
       return (
-        <Route key={ele.path} path={ele.path} element={getLayoutItem(ele)} />
+        <Route
+          key={ele.path}
+          path={ele.path}
+          element={getLayoutItem(ele, undefined, true)}
+        />
       );
     });
   };
