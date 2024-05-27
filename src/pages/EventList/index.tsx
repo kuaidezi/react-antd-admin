@@ -1,30 +1,61 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Table, TableProps, Tag, Switch, Space, Button } from "antd";
+import {
+  Table,
+  TableProps,
+  Tag,
+  Switch,
+  Space,
+  Button,
+  Modal,
+  message,
+} from "antd";
 import {
   EventListDataType,
+  deteleEventDetail,
   fetchEventList,
 } from "@/services/eventListServices";
 
 const EventList: FC = () => {
   const [data, setData] = useState<EventListDataType[]>();
-
+  const [loading, setLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   useEffect(() => {
-    fetchEventList().then((res) => {
-      setData(res);
-    });
+    init();
   }, []);
 
+  const init = () => {
+    setLoading(true);
+    fetchEventList()
+      .then((res) => {
+        setData(res);
+      })
+      .finally(() => setLoading(false));
+  };
   const navigate = useNavigate();
 
   const handleClickEdit = (record: EventListDataType) => {
     navigate(`/public/event/detail/${record.id}`);
   };
 
+  const handleClcikDelete = (record: EventListDataType) => {
+    Modal.confirm({
+      title: "Confirm",
+      content: "Sure delete Record?",
+      onOk: () => {
+        deteleEventDetail(record).then(() => {
+          messageApi.success({ content: "delete successful" });
+          init();
+        });
+      },
+    });
+  };
+
   const columns: TableProps<EventListDataType>["columns"] = [
     {
       title: "Input1",
       dataIndex: "Input1",
+      width: 80,
     },
     {
       title: "Input2",
@@ -96,20 +127,47 @@ const EventList: FC = () => {
     {
       title: "Action",
       key: "action",
+      fixed: "right",
       render: (_, record) => (
         <Space size="middle">
           <Button type="link" onClick={() => handleClickEdit(record)}>
             Edit
           </Button>
-          <Button type="link">Delete</Button>
+          <Button type="link" onClick={() => handleClcikDelete(record)}>
+            Delete
+          </Button>
         </Space>
       ),
     },
   ];
 
   return (
-    <div style={{ overflow: "auto", height: "100%" }}>
-      <Table columns={columns} dataSource={data} rowKey="id" />
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      {contextHolder}
+      <div style={{ width: "80%", height: "700px" }}>
+        <Button
+          type="primary"
+          style={{ marginBottom: 8 }}
+          onClick={() => navigate("/public/event/create")}
+        >
+          Add
+        </Button>
+
+        <Table
+          columns={columns}
+          dataSource={data}
+          loading={loading}
+          rowKey="id"
+          scroll={{ x: "max-content", y: 600 }}
+        />
+      </div>
     </div>
   );
 };

@@ -105,6 +105,11 @@ const routerConfig: IRouteObject[] = [
         title: "事件详情",
         element: <EventDetail />,
       },
+      {
+        path: "/public/event/create",
+        title: "事件新建",
+        element: <EventDetail />,
+      },
     ],
   },
 ];

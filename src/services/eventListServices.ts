@@ -25,3 +25,20 @@ export function fetchEventList(): Promise<EventListDataType[]> {
 export function fetchEventDetail(id: string): Promise<EventListDataType> {
   return request({ url: `/event/detail/${id}/`, method: "get" });
 }
+export function updateEventDetail(
+  data: EventListDataType
+): Promise<EventListDataType> {
+  return request({ url: `/event/detail/`, method: "put", data });
+}
+
+export function createEventDetail(
+  data: EventListDataType
+): Promise<EventListDataType> {
+  return request({ url: `/event/detail/`, method: "post", data });
+}
+
+export function deteleEventDetail(
+  data: EventListDataType
+): Promise<EventListDataType> {
+  return request({ url: `/event/detail/`, method: "detele", data });
+}
