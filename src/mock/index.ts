@@ -76,4 +76,27 @@ Mock.mock(/\/event\/detail/, "detele", (req) => {
   return _item;
 });
 
-export default evenList;
+const graghFlowList = Mock.mock({
+  "data|3-10": [
+    {
+      id: "@guid",
+      nums: ["@integer(0, 20)", "@integer(0, 20)", "@integer(0, 20)"],
+      label: "@cname",
+    },
+  ],
+}).data.map((i: any) => ({
+  id: i.id,
+  label: i.label,
+  plugList: i.nums.map((k: any) => "settingKey" + k),
+}));
+// /graph/unit-list/:id
+const graphUnitReg = /\/graph\/unit-list\/([^/]*)\/?$/;
+Mock.mock(graphUnitReg, "get", (req) => {
+  const { url } = req;
+  const [, id] = url.match(graphUnitReg) || [];
+  if (id) {
+    return graghFlowList.find((i: any) => i.id === id) || {};
+  }
+  return graghFlowList;
+});
+export { evenList, graghFlowList };

@@ -12,6 +12,7 @@ import GoodsList from "@/pages/GoodsList";
 import GoodsDetail from "@/pages/GoodsDetail";
 import EventList from "@/pages/EventList";
 import EventDetail from "@/pages/EventDetail";
+import GraphFlow from "@/pages/GraphFlow";
 
 export interface IRouteObject {
   path: string;
@@ -27,9 +28,9 @@ export interface IRouteObject {
 const routerConfig: IRouteObject[] = [
   {
     path: "/admin/gragh",
-    title: "管理",
+    title: "画布",
     icon: <DesktopOutlined />,
-    element: <GoodsList />,
+    element: <GraphFlow />,
   },
   {
     path: "/admin/goods",
