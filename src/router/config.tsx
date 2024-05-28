@@ -13,6 +13,7 @@ import GoodsDetail from "@/pages/GoodsDetail";
 import EventList from "@/pages/EventList";
 import EventDetail from "@/pages/EventDetail";
 import GraphFlow from "@/pages/GraphFlow";
+import TestPage from "@/pages/TestPage";
 
 export interface IRouteObject {
   path: string;
@@ -116,6 +117,11 @@ const routerConfig: IRouteObject[] = [
         path: "/public/event/create",
         title: "事件新建",
         element: <EventDetail />,
+      },
+      {
+        path: "/public/test",
+        title: "请求中断测试",
+        element: <TestPage />,
       },
     ],
   },
